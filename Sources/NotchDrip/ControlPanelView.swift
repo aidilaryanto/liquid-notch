@@ -28,8 +28,8 @@ struct ControlPanelView: View {
             Text("Brightness: \(Int(brightness.level * 100))%").font(.subheadline)
             Text("Notifikasi: \(notifications.items.count) item (\(accessLabel))").font(.subheadline)
             Text("Izin: Automation untuk Spotify/Music (ditanya saat pertama dipakai), Full Disk Access untuk notifikasi.").font(.subheadline).foregroundColor(.secondary)
-            Toggle("Tahan pill (jangan auto-tutup)", isOn: $model.isPinned)
-            Button("Tutup pill") { model.hide() }
+            Toggle("Tahan kartu (jangan auto-tutup)", isOn: $model.isPinned)
+            Button("Tutup kartu") { model.hide() }
             Button("Quit") { NSApplication.shared.terminate(nil) }
             Spacer()
         }

@@ -19,26 +19,20 @@ struct NotchView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .top) {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+            Color.clear
+                .frame(height: geometry.height)
+            if model.isExpanded {
+                Rectangle()
                     .fill(Color.black)
-                    .frame(width: geometry.width, height: geometry.height)
-                if model.isExpanded {
-                    Rectangle()
-                        .fill(Color.black)
-                        .frame(width: 96, height: 34)
-                        .offset(y: geometry.height - 6)
-                        .transition(.scale(scale: 0.2, anchor: .top).combined(with: .opacity))
-                }
-                if model.isExpanded {
-                    expandedCard
-                        .offset(y: geometry.height + 26)
-                        .transition(.scale(scale: 0.25, anchor: .top).combined(with: .opacity))
-                }
+                    .frame(width: 64, height: 12)
+                    .transition(.scale(scale: 0.2, anchor: .top).combined(with: .opacity))
+                expandedCard
+                    .transition(.scale(scale: 0.25, anchor: .top).combined(with: .opacity))
             }
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .contentShape(Rectangle())
         .animation(.spring(response: 0.45, dampingFraction: 0.65, blendDuration: 0), value: model.isExpanded)
         .animation(.spring(response: 0.45, dampingFraction: 0.65, blendDuration: 0), value: model.kind)
         .onHover { hovering in

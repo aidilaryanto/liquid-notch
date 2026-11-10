@@ -9,7 +9,7 @@ App notch macOS dengan data asli, bukan contoh. Nama NotchDrip masih placeholder
 - **Brightness** — membaca dan mengatur brightness layar built-in lewat IOKit (`IODisplayConnect` + `kIODisplayBrightnessKey`).
 - **Notifikasi** — membaca database Notification Center (`~/Library/Group Containers/group.com.apple.usernoted/db2/db`, tabel `record` + `app`, 7 hari terakhir, 20 item) secara read-only lewat SQLite. Judul/subjudul/isi diambil dari bplist di kolom `data`.
 
-Animasi notch sama seperti prototipe sebelumnya: pill menetes dari notch, spring response 0.45 / damping 0.65, auto-tutup 3,8 detik. Geometri notch diukur saat runtime dari `safeAreaInsets.top` dan area kiri/kanan notch.
+Tidak ada pill notch palsu yang digambar — laptop sudah punya notch asli, jadi saat idle tidak ada yang terlihat selain menu bar biasa. Kartu menetes langsung dari bawah notch lewat leher tipis 64pt, spring response 0.45 / damping 0.65, auto-tutup 3,8 detik. Geometri notch diukur saat runtime dari `safeAreaInsets.top` dan area kiri/kanan notch.
 
 ## Izin yang dibutuhkan
 
