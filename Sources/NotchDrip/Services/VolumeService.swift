@@ -49,7 +49,7 @@ final class VolumeService: ObservableObject {
         )
         var device = AudioDeviceID(0)
         var size = UInt32(MemoryLayout<AudioDeviceID>.size)
-        guard AudioObjectGetPropertyData(kAudioObjectSystemObject, &address, 0, nil, &size, &device) == noErr else { return nil }
+        guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &device) == noErr else { return nil }
         return device
     }
 

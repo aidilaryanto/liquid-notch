@@ -13,7 +13,9 @@ struct NotchGeometry {
         guard top > 0 else {
             return NotchGeometry(width: 200, height: 32, centerX: screen.frame.midX)
         }
-        let width = screen.frame.width - screen.auxiliaryTopLeftArea.width - screen.auxiliaryTopRightArea.width
+        let leftWidth = screen.auxiliaryTopLeftArea?.width ?? 0
+        let rightWidth = screen.auxiliaryTopRightArea?.width ?? 0
+        let width = screen.frame.width - leftWidth - rightWidth
         return NotchGeometry(width: width, height: top, centerX: screen.frame.midX)
     }
 }
