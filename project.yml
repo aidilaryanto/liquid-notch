@@ -15,3 +15,4 @@ targets:
         SWIFT_VERSION: "5.0"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         INFOPLIST_KEY_LSUIElement: true
+        GENERATE_INFOPLIST_FILE: true
