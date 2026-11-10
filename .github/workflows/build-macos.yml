@@ -20,7 +20,9 @@ jobs:
           xcodegen
 
       - name: Build (release)
-        run: xcodebuild -project NotchDrip.xcodeproj -target NotchDrip -configuration Release build
+        run: |
+          set -o pipefail
+          xcodebuild -project NotchDrip.xcodeproj -target NotchDrip -configuration Release build 2>&1 | grep -iE "error:|failed|BUILD SUCCEEDED"
 
       - name: Wrap as NotchDrip.app
         run: |
