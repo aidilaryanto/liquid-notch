@@ -10,7 +10,9 @@ final class BrightnessService: ObservableObject {
 
     func start() {
         refresh()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in self?.refresh() }
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in self?.refresh() }
+        }
     }
 
     func refresh() {

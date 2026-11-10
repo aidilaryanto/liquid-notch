@@ -29,7 +29,9 @@ final class NotificationService: ObservableObject {
 
     func start() {
         refresh()
-        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in self?.refresh() }
+        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in self?.refresh() }
+        }
     }
 
     func refresh() {

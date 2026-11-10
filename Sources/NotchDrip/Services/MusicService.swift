@@ -20,7 +20,9 @@ final class MusicService: ObservableObject {
 
     func start() {
         refresh()
-        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in self?.refresh() }
+        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in self?.refresh() }
+        }
     }
 
     func refresh() {
@@ -28,7 +30,7 @@ final class MusicService: ObservableObject {
             guard let self else { return }
             let found = self.queryPlayer(appName: "Spotify", bundleId: "com.spotify.client")
                 ?? self.queryPlayer(appName: "Music", bundleId: "com.apple.Music")
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.track = found
                 self.isAvailable = found != nil
             }
@@ -66,11 +68,11 @@ final class MusicService: ObservableObject {
         return nil
     }
 
-    private func isRunning(bundleId: String) -> Bool {
+    private nonisolated func isRunning(bundleId: String) -> Bool {
         NSWorkspace.shared.runningApplications.contains { $0.bundleIdentifier == bundleId }
     }
 
-    private func runScript(_ source: String) -> String? {
+    private nonisolated func runScript(_ source: String) -> String? {
         var error: NSDictionary?
         guard let script = NSAppleScript(source: source) else { return nil }
         let result = script.executeAndReturnError(&error)
@@ -78,7 +80,7 @@ final class MusicService: ObservableObject {
         return result.stringValue
     }
 
-    private func queryPlayer(appName: String, bundleId: String) -> Track? {
+    private nonisolated func queryPlayer(appName: String, bundleId: String) -> Track? {
         guard isRunning(bundleId: bundleId) else { return nil }
         let script = """
         tell application "\(appName)"

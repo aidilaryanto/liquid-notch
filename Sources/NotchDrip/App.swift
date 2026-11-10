@@ -12,6 +12,7 @@ struct NotchDripApp: App {
     }
 }
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var notchWindow: NotchWindow?
     private var panelWindow: NSWindow?
@@ -39,12 +40,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            guard let self else { return }
-            let updated = NotchGeometry.measure(screen: NSScreen.main)
-            let replacement = NotchWindow(model: self.model, geometry: updated)
-            self.notchWindow?.orderOut(nil)
-            replacement.orderFrontRegardless()
-            self.notchWindow = replacement
+            Task { @MainActor in
+                guard let self else { return }
+                let updated = NotchGeometry.measure(screen: NSScreen.main)
+                let replacement = NotchWindow(model: self.model, geometry: updated)
+                self.notchWindow?.orderOut(nil)
+                replacement.orderFrontRegardless()
+                self.notchWindow = replacement
+            }
         }
     }
 }
