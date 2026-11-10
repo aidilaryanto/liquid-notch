@@ -1,0 +1,17 @@
+name: NotchDrip
+options:
+  bundleIdPrefix: com.notchdrip
+  deploymentTarget:
+    macOS: "14.0"
+targets:
+  NotchDrip:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/NotchDrip
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.notchdrip.app
+        SWIFT_VERSION: "5.0"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        INFOPLIST_KEY_LSUIElement: true

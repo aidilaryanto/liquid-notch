@@ -1,0 +1,39 @@
+name: Build macOS App
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen
+
+      - name: Build (release)
+        run: xcodebuild -project NotchDrip.xcodeproj -target NotchDrip -configuration Release build
+
+      - name: Wrap as NotchDrip.app
+        run: |
+          BUILT_PRODUCTS_DIR=$(xcodebuild -project NotchDrip.xcodeproj -target NotchDrip -configuration Release -showBuildSettings | awk -F ' = ' '/^ *BUILT_PRODUCTS_DIR/ {print $2; exit}' | xargs)
+          APP="$BUILT_PRODUCTS_DIR/NotchDrip.app"
+          test -d "$APP"
+          codesign --force --deep --sign - "$APP"
+          codesign --verify --verbose "$APP" || true
+          ditto -c -k --keepParent "$APP" NotchDrip-macOS.zip
+          ls -lh NotchDrip-macOS.zip
+
+      - name: Upload build result
+        uses: actions/upload-artifact@v4
+        with:
+          name: NotchDrip-macOS
+          path: NotchDrip-macOS.zip
